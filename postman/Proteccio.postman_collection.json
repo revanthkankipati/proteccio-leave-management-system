@@ -1,0 +1,176 @@
+{
+  "info": {
+    "name": "Proteccio - Leave Management API",
+    "description": "RESTful API for managing employee leave requests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/register",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"employee@example.com\",\n  \"password\": \"Password123\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"department\": \"Engineering\",\n  \"position\": \"Developer\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manager@proteccio.com\",\n  \"password\": \"Password123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/profile",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/users?page=1&limit=10",
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "limit", "value": "10"}
+              ]
+            },
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+          }
+        },
+        {
+          "name": "Get User",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/{{userId}}",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/users/{{userId}}",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"department\": \"Engineering\",\n  \"position\": \"Senior Developer\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Leaves",
+      "item": [
+        {
+          "name": "Create Leave",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/leaves",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"leaveTypeId\": \"{{leaveTypeId}}\",\n  \"startDate\": \"2025-01-15\",\n  \"endDate\": \"2025-01-17\",\n  \"reason\": \"Personal vacation time\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Leaves",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/leaves?page=1&limit=10&status=PENDING",
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "limit", "value": "10"},
+                {"key": "status", "value": "PENDING"}
+              ]
+            },
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+          }
+        },
+        {
+          "name": "Get Leave Balance",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/leaves/balance",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+          }
+        },
+        {
+          "name": "Approve Leave (Manager)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/leaves/{{leaveId}}/status",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"APPROVED\",\n  \"comments\": \"Approved. Enjoy your time off!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reject Leave (Manager)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/leaves/{{leaveId}}/status",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"REJECTED\",\n  \"comments\": \"Request does not meet department requirements.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Cancel Leave",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/leaves/{{leaveId}}/cancel",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:4000/api"},
+    {"key": "token", "value": ""},
+    {"key": "userId", "value": ""},
+    {"key": "leaveTypeId", "value": ""},
+    {"key": "leaveId", "value": ""}
+  ]
+}
