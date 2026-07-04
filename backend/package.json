@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Leave Management System - Backend API",
   "main": "dist/index.js",
+  "prisma": {
+    "seed": "tsx src/seed.ts"
+  },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
