@@ -20,6 +20,10 @@ async function main() {
 
 main();
 
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Rejection:', reason);
+});
+
 process.on('SIGTERM', async () => {
   await prisma.$disconnect();
   process.exit(0);
